@@ -1,8 +1,7 @@
-version: "3.5"
 services:
-
   db:
     image: mysql/mysql-server:8.0.23
+    container_name: db
     environment:
       - MYSQL_ROOT_PASSWORD=12345678
       - MYSQL_DATABASE=emp
@@ -10,13 +9,24 @@ services:
       - MYSQL_PASSWORD=12345678
     ports:
       - 3306:3306
+    networks:
+      - app-network
 
-  web:
+  app:
     image: demo/sre-challenge
+    container_name: app
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
     ports:
       - 8080:8080
+    networks:
+      - app-network
     environment:
-      - DATABASE_ROOT_PASSWORD=12345678
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/emp?allowPublicKeyRetrieval=true&useSSL=false&requireSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=12345678
+
+networks:
+  app-network:
+    driver: bridge
