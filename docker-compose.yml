@@ -13,7 +13,7 @@ services:
       - app-network
 
   app:
-    image: demo/sre-challenge
+    image: edemirtoldo/sre-challenge:latest
     container_name: app
     depends_on:
       db:
