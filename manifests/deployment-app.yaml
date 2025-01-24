@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: sre-challenge # Adicionado o namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              "until nc -z db 3306; do echo waiting for db; sleep 2; done;",
+            ]
+      containers:
+        - name: app
+          image: edemirtoldo/sre-challenge:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://db:3306/emp?allowPublicKeyRetrieval=true&useSSL=false&requireSSL=false"
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: mysql-username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: mysql-password
+          resources:
+            requests:
+              cpu: "100m" # Requisição de CPU
+              memory: "256Mi" # Requisição de memória
+            limits:
+              cpu: "500m" # Limite de CPU
+              memory: "512Mi" # Limite de memória

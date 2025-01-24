@@ -1,0 +1,10 @@
+config:
+  target: "http://192.168.49.2:30080/employee"
+  phases:
+    - duration: 10 # 10 segundos
+      arrivalRate: 50 # 50 requisições por segundo
+
+scenarios:
+  - flow:
+      - get:
+          url: "/"
