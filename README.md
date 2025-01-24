@@ -1,85 +1,171 @@
+## Desafio SRE - Elo
 
-## Bem-vindo
+## Tabela de Conteúdos
 
-Estamos muito felizes por você estar pensando em se juntar a nós! Esse é um teste feito para conhecer um pouco mais de cada candidato. Não se trata de um teste objetivo, capaz de gerar uma nota ou uma taxa de acerto, mas sim de um estudo de caso com o propósito de conhecer os conhecimentos, experiências e modo de trabalhar de um candidato. Não experamos que tudo seja feito perfeitamente, pois valorizamos o seu tempo. Sinta-se livre para desenvolver sua solução para o problema proposto.
+- [Introdução](#introdução)
+- [Requisitos](#requisitos)
+- [Configure o ambiente do desafio](#configure-o-ambiente-do-desafio)
+- [Uso](#uso)
+- [Documentação](#documentação)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
 
-Este desafio está dividido em 4 partes:
+## Introdução
 
-1. Implementação
-2. Depuração
-3. Melhorias
-4. Perguntas
+Este repositório contém o desafio de SRE proposto pela Elo. O objetivo é testar habilidades de infraestrutura, automação e escalabilidade de aplicações utilizando ferramentas como Docker, Kubernetes e Artillery para testes de carga.
 
-## Requisitos para o desafio
+## Requisitos
 
-- Github Account
+Antes de começar, certifique-se de ter os seguintes requisitos instalados:
 
-Se você encontrar possíveis melhorias a serem feitas neste desafio, fique a vontade para descreve-lás.
+- [Docker](https://docs.docker.com/get-docker/)
+- [Kubernetes](https://kubernetes.io/docs/home/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [Artillery](https://www.artillery.io/docs)
 
-## Sobre o Desafio:
+## Configure o ambiente do desafio
 
-A ELO executa a maior parte de sua infraestrutura em Kubernetes. É um monte de microserviços conversando entre si e realizando diversas tarefas.
+### Clone o repositório:
 
-Nesse repositório, fornecemos a você:
+```bash
+git clone https://github.com/edemirtoldo/sre-challenge-elo.git
+cd sre-challenge-elo
+```
 
-- 'sre-challenge-app/': Uma aplicação com CRUD que armazena dados de funcionários em um Banco de dados MySQL 8.
+## Parte 1 - Configuração dos aplicativos
 
-### Configure o ambiente do desafio
+A aplicação sre-challenge-app e seu banco de dados executados em um cluster K8s.
 
-1. Instale qualquer cluster K8s local (ex: Minikube) em sua máquina e documente sua configuração, para que possamos executar sua solução.
-
-### Parte 1 - Configure os aplicativos
-
-Gostariamos que essa aplicação sre-challenge-app e seu banco de dados fossem executados em um cluster K8s.
-
-Requisitos
+Requisitos:
 
 1. A aplicação deve ser acessível de fora do cluster.
 2. Manifestos de implantação do kubernetes para executar com limitação de requests e usando HPA.
 
-### Parte 2 - Corrigir o problema
+## Uso
 
-A aplicação tem um problema. Encontre e corrija! Você saberá que corrigiu o problema quando o estado dos pods no namespaces for semelhante a este:
+### Rodando a aplicação no Docker Compose
 
-```
-NAME                                 READY   STATUS    RESTARTS   AGE
-db-5877fd4d4d-qmngl                  1/1     Running   0          6m50s
-sre-challenge-app-59fd5ffc57-lm2xs   1/1     Running   0          7s
-```
+A aplicação pode ser iniciada localmente utilizando Docker Compose. Para mais informações, consulte a [documentação](docs/docker-compose.md).
 
-Requisitos
+### Implantacão no Minikube
 
-Escreva aqui sobre o problema, a solução, como você a encontrou e qualquer outra coisa que queira compartilhar sobre ela.
+Para implantar a aplicação no Minikube, siga as instruções detalhadas na [documentação](docs/minikube.md).
 
-### Parte 3 - Melhores práticas
+### Testes de Carga com Artillery
 
-Essa aplicação tem uma falha de segurança e gostariamos que as credenciais do MYSQL fossem armazenadas em uma secret do Kubernetes.
+Os testes de carga são realizados com Artillery para verificar o comportamento da aplicação sob carga. Consulte a [documentação](docs/hpa-test.md) para instruções detalhadas.
 
-Requisitos
-1. Manifesto do kubernetes usando a API de secret com as credenciais do Banco para implantação.
-2. Manifesto do kunernetes da aplicação com as informações da secret criada anteriormente.
-2. Configuração do código da aplicação utilizando uma variável que foi referenciada no secrets do K8s (Application Properties do Java)
+### Remover a infraestrutura do K8s
 
-### Parte 4 - Perguntas
+Apos todos os passos acima voce pode remover toda a infraestrutura criada no Minikube. Consulte a [documentação](docs/del-k8s.md) para instruções detalhadas.
 
-Sinta-se à vontade para expressar seus pensamentos e compartilhar suas experiências com exemplos do mundo real com os quais você trabalhou no passado.
+## Parte 2 - Corrigir o problema
 
-Requisitos
-O que você faria para melhorar essa configuração e torná-la “pronta para produção”?
-Existem 2 microsserviços mantidos por 2 equipes diferentes. Cada equipe deve ter acesso apenas ao seu serviço dentro do cluster. Como você abordaria isso?
-Como você evitaria que outros serviços em execução no cluster se comunicassem com o sre-challenge-app?
+## Parte 3 - Melhores práticas
 
+1. Manifesto do Kubernetes para a Secret do MySQL
 
-## O que é importante para nós?
+- Para armazenar as credenciais do MySQL de forma segura, criamos uma Secret do Kubernetes.
 
-É claro que esperamos que a solução funcione, mas também queremos saber como você trabalha e o que é importante para você como engenheiro. Portanto, fique à vontade para criar novos arquivos, refatorar, renomear, ...
+Nota: As credenciais devem ser codificadas em Base64 antes de serem armazenadas.
 
-Idealmente, gostaríamos de ver sua progressão através de commits, verbosidade em suas respostas e todos os requisitos atendidos. Não se esqueça de atualizar o README.md para explicar seu processo de pensamento.
+2. Manifesto do Kubernetes para a aplicação utilizando a Secret
 
-## Entrega do desafio:
+- As credenciais foram injetadas via Secret.
 
-Ao terminar o desafio, convide o 'ELO-SRE' para contribuir com o seu repositório de desafios para que possamos fazer a avaliação. Boa Sorte
+3. Configuração do código da aplicação no Application Properties (Spring Boot)
 
-<p align="center">
-  <img src="ca.jpg" alt="Challange accepted" />
-</p>
+- Baseado no arquivo application.properties do Spring Boot, foi possivel configurar as variáveis de ambiente injetadas pelo Kubernetes.
+
+## Parte 4 - Perguntas
+
+### 1. O que você faria para melhorar essa configuração e torná-la “pronta para produção”?
+
+Para tornar a configuração pronta para produção, eu implementaria as seguintes melhorias:
+
+Segurança:
+
+- Usar Vault (HashiCorp) ou AWS Secrets Manager para armazenamento dinâmico de credenciais.
+- Configurar RBAC (Role-Based Access Control) para restringir o acesso às secrets apenas para pods autorizados.
+- Configurar NetworkPolicies para restringir comunicação entre pods.
+- Habilitar TLS para comunicação entre os serviços e o banco de dados.
+- Monitoramento e Observabilidade:
+
+  - Configurar Prometheus e Grafana para monitorar métricas de aplicação e banco de dados.
+  - Implementar liveness e readiness probes para garantir a disponibilidade do serviço.
+  - Utilizar centralização de logs com ELK Stack ou Loki.
+
+- Alta Disponibilidade e Escalabilidade:
+
+  - Habilitar HPA (Horizontal Pod Autoscaler) para escalar a aplicação conforme a carga.
+  - Configurar ReplicaSets para o banco de dados MySQL, garantindo redundância.
+  - Usar Persistent Volumes com armazenamento adequado para dados críticos.
+
+- Ciclo de Vida da Aplicação:
+  - Automatizar deploys com GitOps (ArgoCD) ou pipelines CI/CD.
+  - Usar Helm Charts para gerenciar configurações complexas.
+
+### 2. Existem 2 microsserviços mantidos por 2 equipes diferentes. Cada equipe deve ter acesso apenas ao seu serviço dentro do cluster. Como você abordaria isso?
+
+Para garantir isolamento entre os serviços, adotaria as seguintes práticas:
+
+#### Namespaces:
+
+- Criar namespaces separados para cada equipe.
+
+#### RBAC (Role-Based Access Control):
+
+- Criar regras de permissão específicas para que cada equipe acesse somente seus recursos.
+
+- Vincular um usuário ou grupo à Role usando RoleBinding.
+
+#### NetworkPolicies:
+
+- Configurar Network Policies para restringir a comunicação entre namespaces e serviços.
+
+#### Separate Service Accounts:
+
+- Criar contas de serviço distintas para cada equipe, garantindo isolamento por autenticação.
+
+### 3. Como você evitaria que outros serviços em execução no cluster se comunicassem com o sre-challenge-app?
+
+Para impedir que outros serviços se comuniquem com o sre-challenge-app, seguiria estas práticas:
+
+#### NetworkPolicy para restringir o tráfego:
+
+Criaria uma política de rede permitindo apenas o acesso de serviços autorizados:
+
+#### Isolamento de Namespace:
+
+Executar a aplicação em um namespace isolado e configurar regras para que apenas serviços internos possam se comunicar.
+
+#### RBAC para restringir acessos:
+
+Criar políticas RBAC para garantir que apenas determinados serviços tenham acesso ao sre-challenge-app.
+
+#### Uso de Service Mesh:
+
+Implementar um service mesh como Istio para controlar o tráfego e definir regras de segurança.
+
+## Documentação
+
+A documentação detalhada do projeto está disponível nos arquivos Markdown dentro da pasta `docs`. Eles incluem guias para:
+
+- [Execução via Docker Compose](docs/docker-compose.md)
+- [Implantação no Minikube](docs/minikube.md)
+- [Testes de HPA com Artillery](docs/hpa-test.md)
+- [Remover a infraestrutura do K8s](docs/del-k8s.md)
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
+
+1. Faça um fork do repositório
+2. Crie uma branch para sua feature (`git checkout -b minha-feature`)
+3. Commit suas alterações (`git commit -m 'Adicionando nova feature'`)
+4. Envie para o repositório remoto (`git push origin minha-feature`)
+5. Abra um Pull Request
+
+## Licença
+
+Este projeto é licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
