@@ -64,7 +64,7 @@ Apos todos os passos acima voce pode remover toda a infraestrutura criada no Min
 Identifiquei e corrigi o problema na aplicação, garantindo que os pods atingissem o estado esperado.
 
 <p align="center">
-  <img src="../sre-challenge-elo/docs/images/img05.png" alt="Img05" />
+  <img src="../docs/images/img05.png" alt="Img05" />
 </p>
 
 Com isso, a aplicação está funcionando corretamente.
