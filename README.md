@@ -61,6 +61,14 @@ Apos todos os passos acima voce pode remover toda a infraestrutura criada no Min
 
 ## Parte 2 - Corrigir o problema
 
+Identifiquei e corrigi o problema na aplicação, garantindo que os pods atingissem o estado esperado.
+
+<p align="center">
+  <img src="../sre-challenge-elo/docs/images/img05.png" alt="Img05" />
+</p>
+
+Com isso, a aplicação está funcionando corretamente.
+
 ## Parte 3 - Melhores práticas
 
 1. Manifesto do Kubernetes para a Secret do MySQL
@@ -147,7 +155,7 @@ Criar políticas RBAC para garantir que apenas determinados serviços tenham ace
 
 Implementar um service mesh como Istio para controlar o tráfego e definir regras de segurança.
 
-## Documentação
+t st## Documentação
 
 A documentação detalhada do projeto está disponível nos arquivos Markdown dentro da pasta `docs`. Eles incluem guias para:
 
