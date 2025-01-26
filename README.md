@@ -61,13 +61,35 @@ Apos todos os passos acima voce pode remover toda a infraestrutura criada no Min
 
 ## Parte 2 - Corrigir o problema
 
+Para corrigir o problema, realizei as seguintes ações:
+
+#### 1. Ajuste no Dockerfile:
+
+- Modifiquei o Dockerfile para garantir que a imagem base da aplicação fosse criada corretamente, solucionando problemas relacionados à build.
+
+#### 2. Correção do Docker Compose:
+
+- Ajustei o docker-compose.yml para executar a aplicação localmente antes de implantá-la no Kubernetes.
+
+- Isso me permitiu identificar dependências ausentes, como variáveis de ambiente e outras configurações necessárias para o correto funcionamento da aplicação.
+
+#### 3. Implantação no Kubernetes:
+
+- Após validar a execução local com sucesso, configurei toda a infraestrutura para rodar no Kubernetes.
+
+Utilizei o Minikube para testar a aplicação em um ambiente local, garantindo que os pods atingissem o estado esperado.
+
+Com essas correções, os pods agora estão rodando corretamente:
+
 Identifiquei e corrigi o problema na aplicação, garantindo que os pods atingissem o estado esperado.
 
 <p align="center">
   <img src="./docs/images/img05.png" alt="Img05" />
 </p>
 
-Com isso, a aplicação está funcionando corretamente.
+Observação: Todo o procedimento para rodar o Minikube e realizar os testes está detalhado nesta [documentação](docs/minikube.md).
+
+Esse processo ajudou a garantir que todos os componentes estivessem configurados corretamente para rodar o desafio no Kubernetes.
 
 ## Parte 3 - Melhores práticas
 
