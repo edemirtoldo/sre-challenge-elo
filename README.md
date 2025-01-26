@@ -77,11 +77,9 @@ Para corrigir o problema, realizei as seguintes ações:
 
 - Após validar a execução local com sucesso, configurei toda a infraestrutura para rodar no Kubernetes.
 
-Utilizei o Minikube para testar a aplicação em um ambiente local, garantindo que os pods atingissem o estado esperado.
+- Utilizei o Minikube para testar a aplicação em um ambiente local, garantindo que os pods atingissem o estado esperado.
 
 Com essas correções, os pods agora estão rodando corretamente:
-
-Identifiquei e corrigi o problema na aplicação, garantindo que os pods atingissem o estado esperado.
 
 <p align="center">
   <img src="./docs/images/img05.png" alt="Img05" />
